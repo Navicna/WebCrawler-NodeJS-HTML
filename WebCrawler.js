@@ -15,10 +15,18 @@ request("https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm", function(
     var title = $(this)
       .find(".titleColumn a")
       .text();
-    console.log("Título: " + title);
-    return title;
+    var rating = $(this)
+      .find(".ratingColumn strong")
+      .text();
+    console.log("Title: " + title + "\n" + " Rating: " + rating + "\n");
+
+    let movies = "Title: " + title + " - " + " Rating: " + rating + "\n";
+    return {
+      title: title,
+      rating: rating
+    };
   });
-  console.log("LISTA:", lista);
+  // console.log("LISTA:", lista);
   fs.writeFile(
     "./index.html",
     `<!DOCTYPE html>
@@ -29,11 +37,12 @@ request("https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm", function(
       <meta http-equiv="X-UA-Compatible" content="ie=edge" />
       <title>Document</title>
     </head>
-    <body>
+    <body style="background-color: black;">
       <ul>
         Títulos:
           ${lista.get().map(item => {
-            return `<li>${item}</li>`;
+            return `<li style="color: chartreuse;">${item.title}</li>
+            <li style="color: yellow;">Rating: ${item.rating}</li>`;
           })}
       </ul>
     </body>
